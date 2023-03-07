@@ -17,6 +17,10 @@ class Application < Sinatra::Base
     "Hello #{name}"
   end
 
+  post '/sort-names' do
+    names = params[:names].split(',').sort.join(',')
+  end
+
   post '/submit' do
     name = params[:name]; message = params[:message]
     "Thanks #{name}, you sent this message: \"#{message}\""
