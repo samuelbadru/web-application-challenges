@@ -8,6 +8,10 @@ class Application < Sinatra::Base
     register Sinatra::Reloader
   end
 
+  get '/names' do
+    "Julia, Mary, Karim"
+  end
+  
   get '/hello' do
     name = params[:name]
     "Hello #{name}"
