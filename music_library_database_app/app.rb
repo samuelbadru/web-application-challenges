@@ -21,6 +21,18 @@ class Application < Sinatra::Base
     selected_album.title
   end
 
+  get '/artists' do
+    repo = ArtistRepository.new
+    all_names = []
+    all_artists = repo.all
+
+    all_artists.each do |artist|
+      all_names << artist.name
+    end
+
+    all_names.join(', ')
+  end
+
   post '/albums' do
     new_album = Album.new
     new_album.title = params[:title]
@@ -29,6 +41,15 @@ class Application < Sinatra::Base
 
     albums = AlbumRepository.new
     albums.create(new_album)
+  end
+
+  post '/artists' do
+    new_artist = Artist.new
+    new_artist.name = params[:name]
+    new_artist.genre = params[:genre]
+
+    repo = ArtistRepository.new
+    repo.create(new_artist)
   end
 
 end
