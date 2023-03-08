@@ -27,6 +27,35 @@ describe Application do
   # class so our tests work.
   let(:app) { Application.new }
 
+  context "GET /albums/:id" do
+    
+    before do
+      @response1 = get('/albums/1')
+      @response2 = get('albums/2')
+    end
+    
+    it 'is a valid web query' do
+      expect(@response1.status).to eq(200)
+      expect(@response2.status).to eq(200)
+    end
+
+    it 'returns album title as a heading' do
+      expect(@response1.body).to include('<h1>Doolittle</h1>')
+      expect(@response2.body).to include('<h1>Surfer Rosa</h1>')
+    end
+
+    it 'returns release year and artist in paragraph' do
+      expect(@response1.body).to include('<p>
+      Release year: 1989
+      Artist: Pixies
+    </p>')
+      expect(@response2.body).to include('<p>
+      Release year: 1988
+      Artist: Pixies
+    </p>')
+    end
+  end
+  
   context "POST /albums" do
     it 'inserts the "Voyage" album into the albums table' do
       create_response = post('/albums', title: 'Voyage', release_year: '2022', artist_id: '2')
@@ -35,7 +64,7 @@ describe Application do
 
       show_response = get('/albums/13')
       expect(show_response.status).to eq(200)
-      expect(show_response.body).to eq('Voyage')
+      expect(show_response.body).to include('<h1>Voyage</h1>')
     end
   end
 
