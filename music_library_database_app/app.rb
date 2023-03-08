@@ -46,6 +46,15 @@ class Application < Sinatra::Base
     all_names.join(', ')
   end
 
+  get '/artists/:id' do
+    artist_id = params[:id]
+    artists = ArtistRepository.new
+    selected_artist = artists.find(artist_id)
+    @name = selected_artist.name
+    @genre = selected_artist.genre
+    return erb(:artist)
+  end
+
   post '/albums' do
     new_album = Album.new
     new_album.title = params[:title]

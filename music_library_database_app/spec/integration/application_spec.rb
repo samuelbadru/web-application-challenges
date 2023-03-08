@@ -88,6 +88,41 @@ describe Application do
     end
   end
   
+  context "GET /artists" do
+    it 'gives a 200 status code' do
+      artist_list_response = get('/artists')
+      expect(artist_list_response.status).to eq (200)
+    end
+    
+    it 'returns the list of artists' do
+      artist_list_response = get('/artists')
+      expect(artist_list_response.body).to eq ('Pixies, ABBA, Taylor Swift, Nina Simone')
+    end
+  end
+
+  context "GET /artists/:id" do
+    before do
+      @response1 = get('/artists/1')
+      @response2 = get('/artists/2')
+    end
+
+    it 'is a valid web query' do
+      expect(@response1.status).to eq (200)
+      expect(@response2.status).to eq (200)
+    end
+
+    it 'has the artist name as the heading' do
+      expect(@response1.body).to include('<h1>Pixies</h1>')
+      expect(@response2.body).to include('<h1>ABBA</h1>')
+    end
+
+    it 'has the genre of the artist' do
+      expect(@response1.body).to include('<p>Genre: Rock</p>')
+      expect(@response2.body).to include('<p>Genre: Pop</p>')
+    end
+  end
+
+
   context "POST /albums" do
     it 'inserts the "Voyage" album into the albums table' do
       create_response = post('/albums', title: 'Voyage', release_year: '2022', artist_id: '2')
@@ -100,17 +135,7 @@ describe Application do
     end
   end
 
-  context "GET /artists" do
-    it 'gives a 200 status code' do
-      artist_list_response = get('/artists')
-      expect(artist_list_response.status).to eq (200)
-    end
-    
-    it 'returns the list of artists' do
-      artist_list_response = get('/artists')
-      expect(artist_list_response.body).to eq ('Pixies, ABBA, Taylor Swift, Nina Simone')
-    end
-  end
+  
 
   context "POST /artists" do
     it 'gives a 200 status code' do
