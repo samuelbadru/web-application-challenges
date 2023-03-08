@@ -5,9 +5,12 @@
   <body>
     <h1>Add an album</h1>
       <form action="/albums" method="POST">
-        <input type="text" name="title" value="Title">
-        <input type="text" name="release_year" value="Release year">
-        <input type="text" name="artist_id" value="Artist id">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title">
+        <label for="release_year">Release year:</label>
+        <input type="text" id="release_year" name="release_year">
+        <label for="artist_id">Artist id:</label>
+        <input type="text" id="artist_id" name="artist_id"><br>
 
         <input type="submit" value="Submit the form">
       </form>
