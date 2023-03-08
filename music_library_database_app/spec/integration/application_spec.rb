@@ -27,11 +27,38 @@ describe Application do
   # class so our tests work.
   let(:app) { Application.new }
 
+  context "GET /albums" do
+    before do
+      @albums_response = get('/albums')
+    end
+
+    it 'is a valid web query' do
+      expect(@albums_response.status).to eq (200)
+    end
+
+    it 'has "Albums" as a heading' do
+      expect(@albums_response.body).to include('<h1>Albums</h1>')
+    end
+
+    it 'returns a list of albums with their title and release year' do
+      expect(@albums_response.body).to include('<div>
+      Title: Doolittle
+      Released: 1989
+    </div>')
+      
+      expect(@albums_response.body).to include('<div>
+      Title: Surfer Rosa
+      Released: 1988
+    </div>')
+    end
+  end
+
+
   context "GET /albums/:id" do
     
     before do
       @response1 = get('/albums/1')
-      @response2 = get('albums/2')
+      @response2 = get('/albums/2')
     end
     
     it 'is a valid web query' do
