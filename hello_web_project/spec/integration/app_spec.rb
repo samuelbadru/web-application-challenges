@@ -16,6 +16,24 @@ describe Application do
     end
   end
 
+  context "GET /hello" do
+    it 'is a successful HTTP request' do
+      response = get('/hello')
+      expect(response.status).to eq(200)
+    end
+
+    #it 'says hello to the name given' do
+    #  response = get('/hello?name=Samuel')
+    #  expect(response.body).to eq('Hello Samuel')
+    #end
+
+    it 'returns the greeting message as an HTML page' do
+      response = get('/hello?name=Samuel')
+      expect(response.body).to include('<h1>Hello!</h1>')
+    end
+
+  end
+
   context "POST /sort-names" do
     it 'returns "Alice,Joe,Julia,Kieran,Zoe"' do
       sort_response1 = post('/sort-names', names: "Joe,Alice,Zoe,Julia,Kieran")
