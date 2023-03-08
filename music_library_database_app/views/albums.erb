@@ -6,7 +6,7 @@
     <h1>Albums</h1>
 
     <% @all_albums.each do |album| %>
-    <a href="/albums/<%=album.id%>">Album <%=album.id%></a>
+    <a href="/albums/<%=album.id%>"><%=album.title%></a>
     <br />
     <% end %>
  

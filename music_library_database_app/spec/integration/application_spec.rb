@@ -41,8 +41,8 @@ describe Application do
     end
 
     it 'returns a list of links for each album' do
-      expect(@albums_response.body).to include('<a href="/albums/1">Album 1</a>')
-      expect(@albums_response.body).to include('<a href="/albums/2">Album 2</a>')
+      expect(@albums_response.body).to include('<a href="/albums/1">Doolittle</a>')
+      expect(@albums_response.body).to include('<a href="/albums/2">Surfer Rosa</a>')
     end
 
     #it 'returns a list of albums with their title and release year' do
@@ -56,6 +56,21 @@ describe Application do
     #  Released: 1988
     #</div>')
     #end
+  end
+
+  context "GET /albums/new" do
+    before do
+      @response = get('/albums/new')
+    end
+    
+    it 'is a valid web path' do
+      expect(@response.status).to eq (200)
+    end
+
+    it 'returns form for adding a new album' do
+      expect(@response.body).to include ('<h1>Add an album</h1>')
+      expect(@response.body).to include ('<form action="/albums" method="POST">') 
+    end
   end
 
 
@@ -98,8 +113,8 @@ describe Application do
     end
     
     it 'returns a list of links for each artist' do
-      expect(@response.body).to include ('<a href="/artists/1">Artist 1</a>')
-      expect(@response.body).to include ('<a href="/artists/2">Artist 2</a>')
+      expect(@response.body).to include ('<a href="/artists/1">Pixies</a>')
+      expect(@response.body).to include ('<a href="/artists/2">ABBA</a>')
     end
 
 
@@ -138,9 +153,36 @@ describe Application do
 
       expect(create_response.status).to eq(200)
 
-      show_response = get('/albums/13')
+      show_response = get('/albums')
       expect(show_response.status).to eq(200)
-      expect(show_response.body).to include('<h1>Voyage</h1>')
+      expect(show_response.body).to include('<a href="/albums/13">Voyage</a>')
+    end
+  end
+
+  context "POST /albums" do
+    before do
+      @response = post('/albums', title: 'Red', release_year: '2012', artist_id: '3')
+    end
+
+    it 'is a valid web request' do
+      expect(@response.status).to eq (200)
+    end
+
+    it 'returns a success page' do
+      expect(@response.body).to include ('<h1>Album added!</h1>')
+    end
+
+    it 'adds the album to the list' do
+      album_response = get('/albums')
+      expect(album_response.body).to include ('<a href="/albums/13">Red</a>')
+    end
+
+    it 'responds with 400 status if invalid parameters are given' do
+      invalid_response1 = post('/albums')
+      invalid_response2 = post('/albums', name: 'Red', year: '2012', id: '3')
+
+      expect(invalid_response1.status).to eq (400)
+      expect(invalid_response2.status).to eq (400)
     end
   end
 

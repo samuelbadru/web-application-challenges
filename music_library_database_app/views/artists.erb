@@ -6,7 +6,7 @@
     <h1>Artists</h1>
 
     <% @all_artists.each do |artist| %>
-    <a href="/artists/<%=artist.id%>">Artist <%=artist.id%></a>
+    <a href="/artists/<%=artist.id%>"><%=artist.name%></a>
     <br />
     <% end %>
  
