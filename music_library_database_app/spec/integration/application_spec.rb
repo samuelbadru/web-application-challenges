@@ -124,6 +124,21 @@ describe Application do
     #end
   end
 
+  context "GET /artists/new" do
+    before do
+      @response = get('/artists/new')
+    end
+    
+    it 'is a valid web path' do
+      expect(@response.status).to eq (200)
+    end
+
+    it 'returns form for adding a new artist' do
+      expect(@response.body).to include ('<h1>Add an artist</h1>')
+      expect(@response.body).to include ('<form action="/artists" method="POST">') 
+    end
+  end
+
   context "GET /artists/:id" do
     before do
       @response1 = get('/artists/1')
@@ -189,16 +204,29 @@ describe Application do
   
 
   context "POST /artists" do
-    it 'gives a 200 status code' do
-      post_artists_response = post('/artists', name: 'Wild nothing', genre: 'Indie')
-      expect(post_artists_response.status).to eq (200)
+    before do
+      @response = post('/artists', name: 'Wild nothing', genre: 'Indie')
     end
 
-    it 'adds the artist to the artists table' do
-      post_artists_response = post('/artists', name: 'Wild nothing', genre: 'Indie')
-      get_response = get('/artists/5')
-      expect(get_response.body).to include ('<h1>Wild nothing</h1>')
-      expect(get_response.body).to include ('<p>Genre: Indie</p>')
+    it 'gives a 200 status code' do
+      expect(@response.status).to eq (200)
+    end
+
+    it 'returns a success page' do
+      expect(@response.body).to include ('<h1>Artist added!</h1>')
+    end
+
+    it 'adds the artist to the list' do
+      get_response = get('/artists')
+      expect(get_response.body).to include ('<a href="/artists/5">Wild nothing</a>')
+    end
+
+    it 'responds with 400 status if invalid parameters are given' do
+      invalid_response1 = post('/artists')
+      invalid_response2 = post('/artists', title: 'Wild nothing', category: 'Indie')
+
+      expect(invalid_response1.status).to eq (400)
+      expect(invalid_response2.status).to eq (400)
     end
   end
 
