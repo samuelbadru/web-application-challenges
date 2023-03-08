@@ -13,6 +13,10 @@ class Application < Sinatra::Base
   post '/hello' do
     @name = params[:name]
 
-    return erb(:hello)
+    if @name.include?("<script>")
+      return redirect('/')
+    else
+      return erb(:hello)
+    end
   end
 end
