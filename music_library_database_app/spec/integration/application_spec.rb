@@ -40,17 +40,22 @@ describe Application do
       expect(@albums_response.body).to include('<h1>Albums</h1>')
     end
 
-    it 'returns a list of albums with their title and release year' do
-      expect(@albums_response.body).to include('<div>
-      Title: Doolittle
-      Released: 1989
-    </div>')
-      
-      expect(@albums_response.body).to include('<div>
-      Title: Surfer Rosa
-      Released: 1988
-    </div>')
+    it 'returns a list of links for each album' do
+      expect(@albums_response.body).to include('<a href="/albums/1">Album 1</a>')
+      expect(@albums_response.body).to include('<a href="/albums/2">Album 2</a>')
     end
+
+    #it 'returns a list of albums with their title and release year' do
+    #  expect(@albums_response.body).to include('<div>
+    #  Title: Doolittle
+    #  Released: 1989
+    #</div>')
+      
+    #  expect(@albums_response.body).to include('<div>
+    #  Title: Surfer Rosa
+    #  Released: 1988
+    #</div>')
+    #end
   end
 
 
