@@ -89,15 +89,24 @@ describe Application do
   end
   
   context "GET /artists" do
-    it 'gives a 200 status code' do
-      artist_list_response = get('/artists')
-      expect(artist_list_response.status).to eq (200)
+    before do
+      @response = get('/artists')
     end
     
-    it 'returns the list of artists' do
-      artist_list_response = get('/artists')
-      expect(artist_list_response.body).to eq ('Pixies, ABBA, Taylor Swift, Nina Simone')
+    it 'gives a 200 status code' do
+      expect(@response.status).to eq (200)
     end
+    
+    it 'returns a list of links for each artist' do
+      expect(@response.body).to include ('<a href="/artists/1">Artist 1</a>')
+      expect(@response.body).to include ('<a href="/artists/2">Artist 2</a>')
+    end
+
+
+    #it 'returns the list of artists' do
+    #  artist_list_response = get('/artists')
+    #  expect(artist_list_response.body).to eq ('Pixies, ABBA, Taylor Swift, Nina Simone')
+    #end
   end
 
   context "GET /artists/:id" do
@@ -145,8 +154,9 @@ describe Application do
 
     it 'adds the artist to the artists table' do
       post_artists_response = post('/artists', name: 'Wild nothing', genre: 'Indie')
-      get_response = get('/artists')
-      expect(get_response.body).to eq ('Pixies, ABBA, Taylor Swift, Nina Simone, Wild nothing')
+      get_response = get('/artists/5')
+      expect(get_response.body).to include ('<h1>Wild nothing</h1>')
+      expect(get_response.body).to include ('<p>Genre: Indie</p>')
     end
   end
 

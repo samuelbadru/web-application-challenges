@@ -1,0 +1,14 @@
+<!-- GET /artists -->
+
+<html>
+  <head></head>
+  <body>
+    <h1>Artists</h1>
+
+    <% @all_artists.each do |artist| %>
+    <a href="/artists/<%=artist.id%>">Artist <%=artist.id%></a>
+    <% end %>
+ 
+    <!-- ... -->
+  </body>
+</html>
