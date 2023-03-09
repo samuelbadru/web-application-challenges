@@ -2,6 +2,8 @@ require "spec_helper"
 require "rack/test"
 require_relative '../../app'
 
+
+
 def reset_albums_table
   seed_sql = File.read('spec/seeds/albums_seeds.sql')
   connection = DatabaseConnection.connect('music_library_test')
