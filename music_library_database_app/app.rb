@@ -5,7 +5,9 @@ require_relative 'lib/database_connection'
 require_relative 'lib/album_repository'
 require_relative 'lib/artist_repository'
 
-DatabaseConnection.connect
+if ENV['ENV'] != 'test'
+  DatabaseConnection.connect('music_library')
+end
 
 class Application < Sinatra::Base
   configure :development do
@@ -13,7 +15,6 @@ class Application < Sinatra::Base
     also_reload 'lib/album_repository'
     also_reload 'lib/artist_repository'
   end
-
   
   get '/albums' do
     albums = AlbumRepository.new
@@ -108,5 +109,4 @@ class Application < Sinatra::Base
     repo.create(new_artist)
     return erb(:artists_new_post)
   end
-
 end
